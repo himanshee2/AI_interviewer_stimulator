@@ -16,7 +16,7 @@ function Login({ navigate, setUser, theme, isDark, toggleTheme }) {
     if (password.length < 6) { setError('Password must be at least 6 characters!'); return }
     setLoading(true); setError('')
     try {
-      const url = isLogin ? 'http://127.0.0.1:5000/api/login' : 'http://127.0.0.1:5000/api/register'
+      const url = isLogin ? 'https://aiinterviewerstimulator-production.up.railway.app//api/login' : 'https://aiinterviewerstimulator-production.up.railway.app//api/register'
       const body = isLogin ? { email, password } : { name, email, password }
       const res = await axios.post(url, body)
       localStorage.setItem('token', res.data.token)
@@ -160,7 +160,7 @@ function Login({ navigate, setUser, theme, isDark, toggleTheme }) {
             <div style={{ flex: 1, height: 1, background: t.border }} />
           </div>
 
-          <button onClick={() => window.location.href = 'http://127.0.0.1:5000/api/auth/google'}
+          <button onClick={() => window.location.href = 'https://aiinterviewerstimulator-production.up.railway.app//api/auth/google'}
             style={{ width: '100%', padding: 13, borderRadius: 12, border: `1.5px solid ${t.border}`, background: t.bgCard, color: t.text, fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, transition: 'all 0.2s' }}>
             <img src="https://www.google.com/favicon.ico" width={18} height={18} alt="G" />
             Continue with Google

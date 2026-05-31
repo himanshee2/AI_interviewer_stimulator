@@ -46,7 +46,7 @@ function Report({ navigate, interviewData, user, theme, isDark, toggleTheme }) {
         strengths: answers.flatMap(a => a.evaluation?.strengths || []).slice(0, 4),
         weaknesses: answers.flatMap(a => a.evaluation?.weaknesses || []).slice(0, 4)
       }
-      const res = await axios.post('http://127.0.0.1:5000/api/generate-report', reportData, { responseType: 'blob' })
+      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/generate-report', reportData, { responseType: 'blob' })
       const url = window.URL.createObjectURL(new Blob([res.data]))
       const link = document.createElement('a')
       link.href = url
@@ -55,7 +55,7 @@ function Report({ navigate, interviewData, user, theme, isDark, toggleTheme }) {
       // Save interview to database
 const token = localStorage.getItem('token')
 if (token) {
-  await axios.post('http://127.0.0.1:5000/api/save-interview', {
+  await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/save-interview', {
     role: interviewData.role,
     difficulty: interviewData.difficulty,
     overall_score: avgOverall,

@@ -17,7 +17,7 @@ function Profile({ navigate, user, logout, theme, isDark, toggleTheme }) {
         navigate('login')
         return
       }
-      const res = await axios.get('http://127.0.0.1:5000/api/my-stats', {
+      const res = await axios.get('https://aiinterviewerstimulator-production.up.railway.app//api/my-stats', {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
