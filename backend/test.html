@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Resume Upload</title>
+</head>
+<body>
+    <h2>Test Resume Upload</h2>
+
+    <form id="uploadForm">
+        <label>Role:</label><br>
+        <input type="text" id="role" value="Software Engineer"><br><br>
+
+        <label>Difficulty:</label><br>
+        <input type="text" id="difficulty" value="Medium"><br><br>
+
+        <label>Upload Resume (PDF):</label><br>
+        <input type="file" id="resume" accept=".pdf"><br><br>
+
+        <button type="button" onclick="uploadResume()">Upload & Generate Questions</button>
+    </form>
+
+    <br>
+    <h3>Response:</h3>
+    <pre id="response" style="background:#f0f0f0; padding:10px;"></pre>
+
+    <script>
+        async function uploadResume() {
+            const formData = new FormData();
+            formData.append('role', document.getElementById('role').value);
+            formData.append('difficulty', document.getElementById('difficulty').value);
+            formData.append('resume', document.getElementById('resume').files[0]);
+
+            document.getElementById('response').innerText = 'Loading...';
+
+            try {
+                const res = await fetch('http://127.0.0.1:5000/api/upload-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                document.getElementById('response').innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('response').innerText = 'Error: ' + err.message;
+            }
+        }
+    </script>
+    <hr>
+<h2>Test Answer Evaluation</h2>
+
+<label>Role:</label><br>
+<input type="text" id="evalRole" value="Software Engineer"><br><br>
+
+<label>Question:</label><br>
+<input type="text" id="evalQuestion" value="What is a REST API?" style="width:400px"><br><br>
+
+<label>Your Answer:</label><br>
+<textarea id="evalAnswer" rows="4" cols="50">A REST API is a way for applications to communicate over HTTP using methods like GET, POST, PUT and DELETE.</textarea><br><br>
+
+<button type="button" onclick="evaluateAnswer()">Evaluate My Answer</button>
+
+<h3>Evaluation Result:</h3>
+<pre id="evalResponse" style="background:#f0f0f0; padding:10px;"></pre>
+
+<script>
+    async function evaluateAnswer() {
+        document.getElementById('evalResponse').innerText = 'Evaluating...';
+        
+        const res = await fetch('http://127.0.0.1:5000/api/evaluate-answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: document.getElementById('evalQuestion').value,
+                answer: document.getElementById('evalAnswer').value,
+                role: document.getElementById('evalRole').value
+            })
+        });
+        const data = await res.json();
+        document.getElementById('evalResponse').innerText = JSON.stringify(data, null, 2);
+    }
+</script>
+<hr>
+<h2>Test Voice Analysis</h2>
+
+<label>Upload Audio (WAV/MP3):</label><br>
+<input type="file" id="audioFile" accept=".wav,.mp3,.m4a"><br><br>
+
+<button type="button" onclick="analyzeVoice()">Analyze Voice</button>
+
+<h3>Voice Analysis Result:</h3>
+<pre id="voiceResponse" style="background:#f0f0f0; padding:10px;"></pre>
+
+<script>
+    async function analyzeVoice() {
+        const file = document.getElementById('audioFile').files[0];
+        if (!file) {
+            alert('Please select an audio file!');
+            return;
+        }
+
+        document.getElementById('voiceResponse').innerText = 'Analyzing voice...';
+
+        const formData = new FormData();
+        formData.append('audio', file);
+
+        try {
+            const res = await fetch('http://127.0.0.1:5000/api/analyze-voice', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            document.getElementById('voiceResponse').innerText = JSON.stringify(data, null, 2);
+        } catch (err) {
+            document.getElementById('voiceResponse').innerText = 'Error: ' + err.message;
+        }
+    }
+</script>
+<hr>
+<h2>Test Emotion Detection</h2>
+
+<video id="webcam" width="320" height="240" autoplay></video><br>
+<canvas id="canvas" width="320" height="240" style="display:none;"></canvas><br><br>
+
+<button type="button" onclick="startWebcam()">Start Webcam</button>
+<button type="button" onclick="captureAndAnalyze()">Capture & Analyze Emotion</button>
+
+<h3>Emotion Result:</h3>
+<pre id="emotionResponse" style="background:#f0f0f0; padding:10px;"></pre>
+
+<script>
+    async function startWebcam() {
+        const video = document.getElementById('webcam');
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        } catch (err) {
+            alert('Webcam error: ' + err.message);
+        }
+    }
+
+    async function captureAndAnalyze() {
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Capture frame
+        ctx.drawImage(video, 0, 0, 320, 240);
+        const imageBase64 = canvas.toDataURL('image/jpeg');
+        
+        document.getElementById('emotionResponse').innerText = 'Analyzing emotion...';
+        
+        try {
+            const res = await fetch('http://127.0.0.1:5000/api/analyze-emotion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: imageBase64 })
+            });
+            const data = await res.json();
+            document.getElementById('emotionResponse').innerText = JSON.stringify(data, null, 2);
+        } catch (err) {
+            document.getElementById('emotionResponse').innerText = 'Error: ' + err.message;
+        }
+    }
+</script>
+
+<hr>
+<h2>Generate Interview Report</h2>
+
+<button type="button" onclick="generateReport()">
+    📄 Generate PDF Report
+</button>
+
+<script>
+async function generateReport() {
+    // Sample data — baad mein real data se replace karenge
+    const reportData = {
+        candidate: {
+            name: "Test Candidate",
+            role: "Software Engineer",
+            difficulty: "Medium"
+        },
+        scores: {
+            overall: 7.5,
+            technical: 7,
+            communication: 8,
+            confidence: 7,
+            voice: 6
+        },
+        emotion: {
+            dominant_emotion: "happy",
+            emotions: {
+                happy: 49.8,
+                fear: 42.9,
+                neutral: 0.2,
+                sad: 7.2,
+                angry: 0,
+                disgust: 0,
+                surprise: 0
+            },
+            feedback: "Great! You appear confident and positive!"
+        },
+        voice: {
+            words_per_minute: 43,
+            duration_seconds: 7,
+            pause_count: 7,
+            confidence_score: 4,
+            feedback: "Work on speaking more confidently."
+        },
+        answers: [
+            {
+                question: "What is a REST API?",
+                evaluation: {
+                    scores: { overall: 8 },
+                    improvement_tip: "Mention statelessness principle."
+                }
+            }
+        ],
+        strengths: [
+            "Clear explanation of concepts",
+            "Good communication skills",
+            "Positive facial expression"
+        ],
+        weaknesses: [
+            "Speaking speed too slow",
+            "Missing technical depth",
+            "Too many pauses"
+        ]
+    };
+
+    try {
+        const res = await fetch('http://127.0.0.1:5000/api/generate-report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportData)
+        });
+
+        if (res.ok) {
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Interview_Report.pdf';
+            a.click();
+            alert('✅ Report downloaded!');
+        } else {
+            alert('Error generating report!');
+        }
+    } catch (err) {
+        alert('Error: ' + err.message);
+    }
+}
+</script>
+</body>
+</html>
