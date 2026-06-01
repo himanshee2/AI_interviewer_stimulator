@@ -33,7 +33,7 @@
             document.getElementById('response').innerText = 'Loading...';
 
             try {
-                const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app//api/upload-resume', {
+                const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app/api/upload-resume', {
                     method: 'POST',
                     body: formData
                 });
@@ -65,7 +65,7 @@
     async function evaluateAnswer() {
         document.getElementById('evalResponse').innerText = 'Evaluating...';
         
-        const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app//api/evaluate-answer', {
+        const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app/api/evaluate-answer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -103,7 +103,7 @@
         formData.append('audio', file);
 
         try {
-            const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app//api/analyze-voice', {
+            const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app/api/analyze-voice', {
                 method: 'POST',
                 body: formData
             });
@@ -149,7 +149,7 @@
         document.getElementById('emotionResponse').innerText = 'Analyzing emotion...';
         
         try {
-            const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app//api/analyze-emotion', {
+            const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app/api/analyze-emotion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: imageBase64 })
@@ -227,7 +227,7 @@ async function generateReport() {
     };
 
     try {
-        const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app//api/generate-report', {
+        const res = await fetch('https://aiinterviewerstimulator-production.up.railway.app/api/generate-report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reportData)

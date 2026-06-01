@@ -96,7 +96,7 @@ function Interview({ navigate, interviewData, setInterviewData, theme, isDark, t
     canvas.width = 320; canvas.height = 240
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0, 320, 240)
     try {
-      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/analyze-emotion', { image: canvas.toDataURL('image/jpeg') })
+      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/analyze-emotion', { image: canvas.toDataURL('image/jpeg') })
       setEmotionData(res.data.analysis)
     } catch (err) { console.log('Emotion error:', err) }
   }
@@ -105,7 +105,7 @@ function Interview({ navigate, interviewData, setInterviewData, theme, isDark, t
     const formData = new FormData()
     formData.append('audio', file)
     try {
-      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/analyze-voice', formData)
+      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/analyze-voice', formData)
       setVoiceData(res.data.analysis)
       return res.data.analysis
     } catch (err) { console.log('Voice error:', err) }
@@ -134,7 +134,7 @@ function Interview({ navigate, interviewData, setInterviewData, theme, isDark, t
     }
     try {
       const finalAnswer = isVoiceOnly ? (voiceResult?.transcript || 'Voice answer recorded') : answer
-      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/evaluate-answer', {
+      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/evaluate-answer', {
         question: currentQuestion.question, answer: finalAnswer, role: interviewData.role
       })
       const newEvaluations = [...evaluations]

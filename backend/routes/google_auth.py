@@ -7,7 +7,7 @@ import urllib.parse
 
 google_auth_bp = Blueprint('google_auth', __name__)
 
-REDIRECT_URI = "https://aiinterviewerstimulator-production.up.railway.app//api/auth/google/callback"
+REDIRECT_URI = "https://aiinterviewerstimulator-production.up.railway.app/api/auth/google/callback"
 SCOPE = "openid email profile"
 
 @google_auth_bp.route("/api/auth/google")

@@ -34,7 +34,7 @@ function Home({ navigate, interviewData, setInterviewData, user, logout, theme, 
       formData.append('resume', file)
       formData.append('role', role)
       formData.append('difficulty', difficulty)
-      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app//api/upload-resume', formData)
+      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/upload-resume', formData)
       setInterviewData({ ...interviewData, role, difficulty, questions: res.data.questions, answers: [], emotionData: null, voiceData: null })
       navigate('interview')
     } catch (err) {
