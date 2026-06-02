@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import API_URL from '../config'
 
 function Report({ navigate, interviewData, user, theme, isDark, toggleTheme }) {
   const [downloading, setDownloading] = useState(false)
@@ -46,7 +47,7 @@ function Report({ navigate, interviewData, user, theme, isDark, toggleTheme }) {
         strengths: answers.flatMap(a => a.evaluation?.strengths || []).slice(0, 4),
         weaknesses: answers.flatMap(a => a.evaluation?.weaknesses || []).slice(0, 4)
       }
-      const res = await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/generate-report', reportData, { responseType: 'blob' })
+      const res = await axios.post('${API_URL}/api/generate-report', reportData, { responseType: 'blob' })
       const url = window.URL.createObjectURL(new Blob([res.data]))
       const link = document.createElement('a')
       link.href = url
@@ -55,7 +56,7 @@ function Report({ navigate, interviewData, user, theme, isDark, toggleTheme }) {
       // Save interview to database
 const token = localStorage.getItem('token')
 if (token) {
-  await axios.post('https://aiinterviewerstimulator-production.up.railway.app/api/save-interview', {
+  await axios.post('${API_URL}/api/save-interview', {
     role: interviewData.role,
     difficulty: interviewData.difficulty,
     overall_score: avgOverall,

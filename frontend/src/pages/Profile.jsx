@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import API_URL from '../config'
 
 function Profile({ navigate, user, logout, theme, isDark, toggleTheme }) {
   const [stats, setStats] = useState(null)
@@ -17,7 +18,7 @@ function Profile({ navigate, user, logout, theme, isDark, toggleTheme }) {
         navigate('login')
         return
       }
-      const res = await axios.get('https://aiinterviewerstimulator-production.up.railway.app/api/my-stats', {
+      const res = await axios.get('${API_URL}/api/my-stats', {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
